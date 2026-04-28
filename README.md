@@ -1,7 +1,7 @@
 # Job & Career Recommendation Ontology
 
 > **Course:** Knowledge Engineering and Ontologies  
-> **University:** [Your University Name]  
+> **University:** Manisa Celal Bayar Üniversitesi  
 > **Term:** Spring 2026  
 > **Authors:** Naciye Nur Akkuş · Elif Sude Yılmaz  
 
