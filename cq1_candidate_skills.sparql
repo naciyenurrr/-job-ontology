@@ -1,8 +1,0 @@
-# CQ1 — What skills does a given candidate possess?
-# Change :Naciye to any candidate IRI to query a different person.
-
-PREFIX : <http://www.example.org/jobontology#>
-
-SELECT ?skill WHERE {
-  :Naciye :hasSkill ?skill .
-}
