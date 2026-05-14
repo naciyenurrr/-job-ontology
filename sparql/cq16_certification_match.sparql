@@ -1,0 +1,16 @@
+# CQ16 — Which candidates hold ALL certifications required by MLEngineerJob?
+
+PREFIX : <http://www.example.org/jobontology#>
+
+SELECT ?candidate WHERE {
+  {
+    SELECT (COUNT(?cert) AS ?total) WHERE {
+      :MLEngineerJob :requiresCertification ?cert .
+    }
+  }
+  ?candidate a :Candidate ;
+             :holdsCertification ?heldCert .
+  :MLEngineerJob :requiresCertification ?heldCert .
+}
+GROUP BY ?candidate
+HAVING (COUNT(?heldCert) = ?total)
