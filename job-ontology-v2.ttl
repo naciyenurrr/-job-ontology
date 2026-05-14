@@ -1,0 +1,507 @@
+@prefix :       <http://www.example.org/jobontology#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc:     <http://purl.org/dc/elements/1.1/> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <https://schema.org/> .
+
+##########################################################################
+### ONTOLOGY METADATA  —  Version 2.0
+##########################################################################
+
+<http://www.example.org/jobontology>
+    a owl:Ontology ;
+    dc:title       "Job and Career Recommendation Ontology" ;
+    dc:description "An OWL 2 ontology for skill-based matching of job candidates with job postings. V2 adds skill proficiency levels, certifications, sector classification, LLM-populated instances, and alignment with schema.org." ;
+    dc:creator     "Naciye Nur Akkuş" , "Elif Sude Yılmaz" ;
+    dc:date        "2026-05-12" ;
+    dc:version     "2.0" ;
+    owl:versionIRI <http://www.example.org/jobontology/2.0> ;
+    owl:priorVersion <http://www.example.org/jobontology/1.0> .
+
+##########################################################################
+### CLASSES  —  V1 Core (unchanged)
+##########################################################################
+
+:Person a owl:Class ;
+    rdfs:label   "Person"@en ;
+    rdfs:comment "A human being who participates in the recruitment process."@en .
+
+:Candidate a owl:Class ;
+    rdfs:subClassOf :Person ;
+    rdfs:label   "Candidate"@en ;
+    rdfs:comment "A person seeking employment."@en ;
+    owl:disjointWith :Recruiter .
+
+:Recruiter a owl:Class ;
+    rdfs:subClassOf :Person ;
+    rdfs:label   "Recruiter"@en ;
+    rdfs:comment "A person responsible for finding and evaluating candidates."@en .
+
+:Job a owl:Class ;
+    rdfs:label   "Job"@en ;
+    rdfs:comment "A specific employment position offered by a company."@en .
+
+:Company a owl:Class ;
+    rdfs:label   "Company"@en ;
+    rdfs:comment "An organisation that posts job openings."@en .
+
+:Skill a owl:Class ;
+    rdfs:label   "Skill"@en ;
+    rdfs:comment "A competency relevant to employment."@en .
+
+:TechnicalSkill a owl:Class ;
+    rdfs:subClassOf :Skill ;
+    rdfs:label   "Technical Skill"@en .
+
+:SoftSkill a owl:Class ;
+    rdfs:subClassOf :Skill ;
+    rdfs:label   "Soft Skill"@en .
+
+:ExperienceLevel a owl:Class ;
+    rdfs:label   "Experience Level"@en ;
+    rdfs:comment "A seniority classification (Junior / Mid / Senior)."@en .
+
+:JobCategory a owl:Class ;
+    rdfs:label   "Job Category"@en .
+
+##########################################################################
+### CLASSES  —  V2 NEW
+##########################################################################
+
+### Skill Proficiency Level
+:SkillProficiency a owl:Class ;
+    rdfs:label   "Skill Proficiency"@en ;
+    rdfs:comment "The degree of mastery a candidate has over a specific skill (Beginner / Intermediate / Expert)."@en .
+
+### Certification
+:Certification a owl:Class ;
+    rdfs:label   "Certification"@en ;
+    rdfs:comment "A formal credential attesting that a candidate has demonstrated mastery of a skill or domain."@en .
+
+### Sector (industry vertical)
+:Sector a owl:Class ;
+    rdfs:label   "Sector"@en ;
+    rdfs:comment "An industry sector or vertical to which a company or job belongs (e.g., FinTech, HealthTech)."@en .
+
+### SkillAssessment — links a candidate to a skill WITH a proficiency level
+:SkillAssessment a owl:Class ;
+    rdfs:label   "Skill Assessment"@en ;
+    rdfs:comment "Reified relationship linking a candidate to a skill together with a proficiency level."@en .
+
+##########################################################################
+### OBJECT PROPERTIES  —  V1 Core
+##########################################################################
+
+:hasSkill a owl:ObjectProperty ;
+    rdfs:domain  :Candidate ; rdfs:range :Skill ;
+    owl:inverseOf :isSkillOf ;
+    rdfs:label "has skill"@en .
+
+:isSkillOf a owl:ObjectProperty ;
+    rdfs:domain  :Skill ; rdfs:range :Candidate ;
+    rdfs:label "is skill of"@en .
+
+:requiresSkill a owl:ObjectProperty ;
+    rdfs:domain  :Job ; rdfs:range :Skill ;
+    rdfs:label "requires skill"@en .
+
+:offeredBy a owl:ObjectProperty ;
+    rdfs:domain  :Job ; rdfs:range :Company ;
+    owl:inverseOf :offersJob ;
+    rdfs:label "offered by"@en .
+
+:offersJob a owl:ObjectProperty ;
+    rdfs:domain  :Company ; rdfs:range :Job ;
+    rdfs:label "offers job"@en .
+
+:appliesTo a owl:ObjectProperty ;
+    rdfs:domain  :Candidate ; rdfs:range :Job ;
+    rdfs:label "applies to"@en .
+
+:recommendedFor a owl:ObjectProperty ;
+    rdfs:domain  :Job ; rdfs:range :Candidate ;
+    rdfs:label "recommended for"@en .
+
+:hasExperienceLevel a owl:ObjectProperty ;
+    rdfs:domain  :Candidate ; rdfs:range :ExperienceLevel ;
+    rdfs:label "has experience level"@en .
+
+:requiresExperienceLevel a owl:ObjectProperty ;
+    rdfs:domain  :Job ; rdfs:range :ExperienceLevel ;
+    rdfs:label "requires experience level"@en .
+
+:belongsToCategory a owl:ObjectProperty ;
+    rdfs:domain  :Job ; rdfs:range :JobCategory ;
+    rdfs:label "belongs to category"@en .
+
+##########################################################################
+### OBJECT PROPERTIES  —  V2 NEW
+##########################################################################
+
+### Skill Assessment links
+:hasSkillAssessment a owl:ObjectProperty ;
+    rdfs:domain  :Candidate ;
+    rdfs:range   :SkillAssessment ;
+    rdfs:label   "has skill assessment"@en ;
+    rdfs:comment "Links a candidate to a reified skill-proficiency record."@en .
+
+:assessedSkill a owl:ObjectProperty ;
+    rdfs:domain  :SkillAssessment ;
+    rdfs:range   :Skill ;
+    rdfs:label   "assessed skill"@en .
+
+:hasProficiency a owl:ObjectProperty ;
+    rdfs:domain  :SkillAssessment ;
+    rdfs:range   :SkillProficiency ;
+    rdfs:label   "has proficiency"@en .
+
+### Certification links
+:holdsCertification a owl:ObjectProperty ;
+    rdfs:domain  :Candidate ;
+    rdfs:range   :Certification ;
+    rdfs:label   "holds certification"@en .
+
+:certifiesSkill a owl:ObjectProperty ;
+    rdfs:domain  :Certification ;
+    rdfs:range   :Skill ;
+    rdfs:label   "certifies skill"@en .
+
+:requiresCertification a owl:ObjectProperty ;
+    rdfs:domain  :Job ;
+    rdfs:range   :Certification ;
+    rdfs:label   "requires certification"@en ;
+    rdfs:comment "A job may optionally or mandatorily require a specific certification."@en .
+
+### Sector links
+:operatesInSector a owl:ObjectProperty ;
+    rdfs:domain  :Company ;
+    rdfs:range   :Sector ;
+    rdfs:label   "operates in sector"@en .
+
+:targetsSector a owl:ObjectProperty ;
+    rdfs:domain  :Job ;
+    rdfs:range   :Sector ;
+    rdfs:label   "targets sector"@en .
+
+##########################################################################
+### DATATYPE PROPERTIES  —  V1 Core
+##########################################################################
+
+:name a owl:DatatypeProperty ;
+    rdfs:domain :Person ; rdfs:range xsd:string ; rdfs:label "name"@en .
+
+:email a owl:DatatypeProperty ;
+    rdfs:domain :Person ; rdfs:range xsd:string ; rdfs:label "email"@en .
+
+:jobTitle a owl:DatatypeProperty ;
+    rdfs:domain :Job ; rdfs:range xsd:string ; rdfs:label "job title"@en .
+
+:jobDescription a owl:DatatypeProperty ;
+    rdfs:domain :Job ; rdfs:range xsd:string ; rdfs:label "job description"@en .
+
+:companyName a owl:DatatypeProperty ;
+    rdfs:domain :Company ; rdfs:range xsd:string ; rdfs:label "company name"@en .
+
+:location a owl:DatatypeProperty ;
+    rdfs:domain :Company ; rdfs:range xsd:string ; rdfs:label "location"@en .
+
+:yearsOfExperience a owl:DatatypeProperty ;
+    rdfs:domain :Candidate ; rdfs:range xsd:int ; rdfs:label "years of experience"@en .
+
+##########################################################################
+### DATATYPE PROPERTIES  —  V2 NEW
+##########################################################################
+
+:certificationName a owl:DatatypeProperty ;
+    rdfs:domain  :Certification ;
+    rdfs:range   xsd:string ;
+    rdfs:label   "certification name"@en .
+
+:issuingBody a owl:DatatypeProperty ;
+    rdfs:domain  :Certification ;
+    rdfs:range   xsd:string ;
+    rdfs:label   "issuing body"@en ;
+    rdfs:comment "The organisation that issued the certification (e.g., Google, AWS, Microsoft)."@en .
+
+:issueDate a owl:DatatypeProperty ;
+    rdfs:domain  :Certification ;
+    rdfs:range   xsd:date ;
+    rdfs:label   "issue date"@en .
+
+:expiryDate a owl:DatatypeProperty ;
+    rdfs:domain  :Certification ;
+    rdfs:range   xsd:date ;
+    rdfs:label   "expiry date"@en .
+
+:salary a owl:DatatypeProperty ;
+    rdfs:domain  :Job ;
+    rdfs:range   xsd:string ;
+    rdfs:label   "salary range"@en ;
+    rdfs:comment "Indicative salary range for the position (e.g., '70,000-90,000 USD')."@en .
+
+:remote a owl:DatatypeProperty ;
+    rdfs:domain  :Job ;
+    rdfs:range   xsd:boolean ;
+    rdfs:label   "is remote"@en .
+
+##########################################################################
+### NAMED INDIVIDUALS  —  Skill Proficiency Levels (V2 NEW)
+##########################################################################
+
+:Beginner a :SkillProficiency ;
+    rdfs:label "Beginner"@en ;
+    skos:definition "Basic awareness; can use the skill with guidance."@en .
+
+:Intermediate a :SkillProficiency ;
+    rdfs:label "Intermediate"@en ;
+    skos:definition "Can apply the skill independently in standard situations."@en .
+
+:Expert a :SkillProficiency ;
+    rdfs:label "Expert"@en ;
+    skos:definition "Deep mastery; can mentor others and handle complex edge cases."@en .
+
+##########################################################################
+### NAMED INDIVIDUALS  —  Experience Levels
+##########################################################################
+
+:Junior a :ExperienceLevel ;
+    rdfs:label "Junior"@en ;
+    skos:definition "0-2 years of professional experience."@en .
+
+:Mid a :ExperienceLevel ;
+    rdfs:label "Mid-Level"@en ;
+    skos:definition "3-5 years of professional experience."@en .
+
+:Senior a :ExperienceLevel ;
+    rdfs:label "Senior"@en ;
+    skos:definition "6 or more years of professional experience."@en .
+
+##########################################################################
+### NAMED INDIVIDUALS  —  Sectors (V2 NEW)
+##########################################################################
+
+:TechSector    a :Sector ; rdfs:label "Technology"@en .
+:FinTech       a :Sector ; rdfs:label "Financial Technology"@en .
+:HealthTech    a :Sector ; rdfs:label "Health Technology"@en .
+:ECommerce     a :Sector ; rdfs:label "E-Commerce"@en .
+
+##########################################################################
+### NAMED INDIVIDUALS  —  Skills
+##########################################################################
+
+:Python            a :TechnicalSkill ; rdfs:label "Python"@en .
+:MachineLearning   a :TechnicalSkill ; rdfs:label "Machine Learning"@en .
+:DataAnalysis      a :TechnicalSkill ; rdfs:label "Data Analysis"@en .
+:SQL               a :TechnicalSkill ; rdfs:label "SQL"@en .
+:DeepLearning      a :TechnicalSkill ; rdfs:label "Deep Learning"@en .
+:DataVisualization a :TechnicalSkill ; rdfs:label "Data Visualization"@en .
+:NLP               a :TechnicalSkill ; rdfs:label "Natural Language Processing"@en .
+:CloudComputing    a :TechnicalSkill ; rdfs:label "Cloud Computing"@en .
+:Spark             a :TechnicalSkill ; rdfs:label "Apache Spark"@en .
+:Tableau           a :TechnicalSkill ; rdfs:label "Tableau"@en .
+
+:Communication a :SoftSkill ; rdfs:label "Communication"@en .
+:ProblemSolving a :SoftSkill ; rdfs:label "Problem Solving"@en .
+:Teamwork      a :SoftSkill ; rdfs:label "Teamwork"@en .
+
+##########################################################################
+### NAMED INDIVIDUALS  —  Certifications (V2 NEW)
+##########################################################################
+
+:GoogleMLCert a :Certification ;
+    :certificationName "Google Professional Machine Learning Engineer" ;
+    :issuingBody "Google Cloud" ;
+    :certifiesSkill :MachineLearning , :Python .
+
+:AWSDACert a :Certification ;
+    :certificationName "AWS Certified Data Analytics - Specialty" ;
+    :issuingBody "Amazon Web Services" ;
+    :certifiesSkill :DataAnalysis , :CloudComputing , :SQL .
+
+:TableauDesktopCert a :Certification ;
+    :certificationName "Tableau Desktop Specialist" ;
+    :issuingBody "Salesforce / Tableau" ;
+    :certifiesSkill :Tableau , :DataVisualization .
+
+##########################################################################
+### NAMED INDIVIDUALS  —  Companies
+##########################################################################
+
+:TechCorp a :Company ;
+    :companyName "TechCorp" ;
+    :location "Istanbul, Turkey" ;
+    :operatesInSector :TechSector .
+
+:DataHub a :Company ;
+    :companyName "DataHub Analytics" ;
+    :location "Ankara, Turkey" ;
+    :operatesInSector :TechSector .
+
+:FinAI a :Company ;
+    :companyName "FinAI Solutions" ;
+    :location "Istanbul, Turkey" ;
+    :operatesInSector :FinTech .
+
+##########################################################################
+### NAMED INDIVIDUALS  —  Job Categories
+##########################################################################
+
+:DataScienceCategory     a :JobCategory ; rdfs:label "Data Science"@en .
+:SoftwareEngCategory     a :JobCategory ; rdfs:label "Software Engineering"@en .
+:DataEngCategory         a :JobCategory ; rdfs:label "Data Engineering"@en .
+
+##########################################################################
+### NAMED INDIVIDUALS  —  Jobs
+##########################################################################
+
+:DataScientistJob a :Job ;
+    :jobTitle                "Data Scientist" ;
+    :jobDescription          "Develop and deploy machine learning models on large-scale datasets to drive business decisions." ;
+    :requiresSkill           :Python , :MachineLearning , :SQL ;
+    :requiresExperienceLevel :Mid ;
+    :offeredBy               :TechCorp ;
+    :belongsToCategory       :DataScienceCategory ;
+    :targetsSector           :TechSector ;
+    :salary                  "80,000-110,000 TRY/month" ;
+    :remote                  "false"^^xsd:boolean .
+
+:JuniorDataAnalystJob a :Job ;
+    :jobTitle                "Junior Data Analyst" ;
+    :jobDescription          "Analyse business data and create dashboards to support decision-making." ;
+    :requiresSkill           :DataAnalysis , :SQL , :DataVisualization , :Tableau ;
+    :requiresExperienceLevel :Junior ;
+    :offeredBy               :DataHub ;
+    :belongsToCategory       :DataScienceCategory ;
+    :requiresCertification   :TableauDesktopCert ;
+    :salary                  "40,000-55,000 TRY/month" ;
+    :remote                  "true"^^xsd:boolean .
+
+:MLEngineerJob a :Job ;
+    :jobTitle                "Machine Learning Engineer" ;
+    :jobDescription          "Design and maintain production ML pipelines and infrastructure at scale." ;
+    :requiresSkill           :Python , :MachineLearning , :DeepLearning , :CloudComputing ;
+    :requiresExperienceLevel :Senior ;
+    :offeredBy               :TechCorp ;
+    :requiresCertification   :GoogleMLCert ;
+    :belongsToCategory       :DataScienceCategory ;
+    :salary                  "150,000-200,000 TRY/month" ;
+    :remote                  "false"^^xsd:boolean .
+
+:DataEngineerJob a :Job ;
+    :jobTitle                "Data Engineer" ;
+    :jobDescription          "Build and optimise data pipelines using Spark and cloud infrastructure." ;
+    :requiresSkill           :Python , :SQL , :Spark , :CloudComputing ;
+    :requiresExperienceLevel :Mid ;
+    :offeredBy               :FinAI ;
+    :belongsToCategory       :DataEngCategory ;
+    :targetsSector           :FinTech ;
+    :salary                  "100,000-130,000 TRY/month" ;
+    :remote                  "true"^^xsd:boolean .
+
+:NLPResearcherJob a :Job ;
+    :jobTitle                "NLP Research Scientist" ;
+    :jobDescription          "Research and develop NLP models for multilingual text understanding." ;
+    :requiresSkill           :Python , :NLP , :DeepLearning , :MachineLearning ;
+    :requiresExperienceLevel :Senior ;
+    :offeredBy               :FinAI ;
+    :belongsToCategory       :DataScienceCategory ;
+    :salary                  "160,000-210,000 TRY/month" ;
+    :remote                  "true"^^xsd:boolean .
+
+##########################################################################
+### NAMED INDIVIDUALS  —  Candidates  (LLM-populated instances V2)
+##########################################################################
+
+### Naciye — with skill assessments and certification
+:Naciye a :Candidate ;
+    :name                "Naciye Nur Akkus" ;
+    :email               "naciye@example.com" ;
+    :hasSkill            :Python , :DataAnalysis , :DataVisualization , :Tableau , :SQL ;
+    :hasExperienceLevel  :Junior ;
+    :yearsOfExperience   1 ;
+    :appliesTo           :JuniorDataAnalystJob ;
+    :holdsCertification  :TableauDesktopCert ;
+    :hasSkillAssessment  :NaciyePythonAssessment , :NaciyeSQLAssessment .
+
+:NaciyePythonAssessment a :SkillAssessment ;
+    :assessedSkill  :Python ;
+    :hasProficiency :Intermediate .
+
+:NaciyeSQLAssessment a :SkillAssessment ;
+    :assessedSkill  :SQL ;
+    :hasProficiency :Beginner .
+
+### Berat
+:Berat a :Candidate ;
+    :name                "Berat Yilmaz" ;
+    :email               "berat@example.com" ;
+    :hasSkill            :Python , :MachineLearning , :SQL , :DataAnalysis ;
+    :hasExperienceLevel  :Mid ;
+    :yearsOfExperience   3 ;
+    :appliesTo           :DataScientistJob ;
+    :hasSkillAssessment  :BeratMLAssessment .
+
+:BeratMLAssessment a :SkillAssessment ;
+    :assessedSkill  :MachineLearning ;
+    :hasProficiency :Intermediate .
+
+### Zeynep
+:Zeynep a :Candidate ;
+    :name                "Zeynep Arslan" ;
+    :email               "zeynep@example.com" ;
+    :hasSkill            :Python , :MachineLearning , :DeepLearning , :SQL , :CloudComputing ;
+    :hasExperienceLevel  :Senior ;
+    :yearsOfExperience   7 ;
+    :appliesTo           :MLEngineerJob ;
+    :holdsCertification  :GoogleMLCert , :AWSDACert ;
+    :hasSkillAssessment  :ZeynepMLAssessment , :ZeynepDLAssessment .
+
+:ZeynepMLAssessment a :SkillAssessment ;
+    :assessedSkill  :MachineLearning ;
+    :hasProficiency :Expert .
+
+:ZeynepDLAssessment a :SkillAssessment ;
+    :assessedSkill  :DeepLearning ;
+    :hasProficiency :Expert .
+
+### Cem — new LLM-populated candidate
+:Cem a :Candidate ;
+    :name                "Cem Kaya" ;
+    :email               "cem@example.com" ;
+    :hasSkill            :Python , :SQL , :Spark , :CloudComputing , :DataAnalysis ;
+    :hasExperienceLevel  :Mid ;
+    :yearsOfExperience   4 ;
+    :appliesTo           :DataEngineerJob ;
+    :holdsCertification  :AWSDACert ;
+    :hasSkillAssessment  :CemSparkAssessment .
+
+:CemSparkAssessment a :SkillAssessment ;
+    :assessedSkill  :Spark ;
+    :hasProficiency :Intermediate .
+
+### Selin — new LLM-populated candidate
+:Selin a :Candidate ;
+    :name                "Selin Demir" ;
+    :email               "selin@example.com" ;
+    :hasSkill            :Python , :NLP , :DeepLearning , :MachineLearning ;
+    :hasExperienceLevel  :Senior ;
+    :yearsOfExperience   6 ;
+    :appliesTo           :NLPResearcherJob ;
+    :hasSkillAssessment  :SelinNLPAssessment .
+
+:SelinNLPAssessment a :SkillAssessment ;
+    :assessedSkill  :NLP ;
+    :hasProficiency :Expert .
+
+##########################################################################
+### RECOMMENDATION ASSERTIONS
+##########################################################################
+
+:DataScientistJob     :recommendedFor :Berat .
+:JuniorDataAnalystJob :recommendedFor :Naciye .
+:MLEngineerJob        :recommendedFor :Zeynep .
+:DataEngineerJob      :recommendedFor :Cem .
+:NLPResearcherJob     :recommendedFor :Selin .

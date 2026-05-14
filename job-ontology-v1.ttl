@@ -1,0 +1,330 @@
+@prefix :       <http://www.example.org/jobontology#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc:     <http://purl.org/dc/elements/1.1/> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+
+##########################################################################
+### ONTOLOGY METADATA
+##########################################################################
+
+<http://www.example.org/jobontology>
+    a owl:Ontology ;
+    dc:title       "Job and Career Recommendation Ontology" ;
+    dc:description "An OWL 2 ontology for skill-based matching of job candidates with job postings." ;
+    dc:creator     "Naciye Nur Akkuş" , "Elif Sude Yılmaz" ;
+    dc:date        "2026-04-28" ;
+    dc:version     "1.0" ;
+    owl:versionIRI <http://www.example.org/jobontology/1.0> .
+
+##########################################################################
+### CLASSES
+##########################################################################
+
+:Person a owl:Class ;
+    rdfs:label   "Person"@en ;
+    rdfs:comment "A human being who participates in the recruitment process."@en .
+
+:Candidate a owl:Class ;
+    rdfs:subClassOf :Person ;
+    rdfs:label   "Candidate"@en ;
+    rdfs:comment "A person who is seeking employment and may apply for job positions."@en ;
+    owl:disjointWith :Recruiter .
+
+:Recruiter a owl:Class ;
+    rdfs:subClassOf :Person ;
+    rdfs:label   "Recruiter"@en ;
+    rdfs:comment "A person responsible for finding and evaluating candidates for job positions."@en .
+
+:Job a owl:Class ;
+    rdfs:label   "Job"@en ;
+    rdfs:comment "A specific employment position offered by a company."@en .
+
+:Company a owl:Class ;
+    rdfs:label   "Company"@en ;
+    rdfs:comment "An organisation that posts job openings and employs candidates."@en .
+
+:Skill a owl:Class ;
+    rdfs:label   "Skill"@en ;
+    rdfs:comment "A specific competency, technical ability, or knowledge area relevant to employment."@en .
+
+:TechnicalSkill a owl:Class ;
+    rdfs:subClassOf :Skill ;
+    rdfs:label   "Technical Skill"@en ;
+    rdfs:comment "A skill relating to programming languages, tools, frameworks, or engineering practices."@en .
+
+:SoftSkill a owl:Class ;
+    rdfs:subClassOf :Skill ;
+    rdfs:label   "Soft Skill"@en ;
+    rdfs:comment "An interpersonal or communication skill."@en .
+
+:ExperienceLevel a owl:Class ;
+    rdfs:label   "Experience Level"@en ;
+    rdfs:comment "A classification of professional seniority (e.g., Junior, Mid, Senior)."@en .
+
+:JobCategory a owl:Class ;
+    rdfs:label   "Job Category"@en ;
+    rdfs:comment "A broad classification of job types (e.g., Engineering, Data Science, Design)."@en .
+
+##########################################################################
+### OBJECT PROPERTIES
+##########################################################################
+
+### Candidate – Skill
+:hasSkill a owl:ObjectProperty ;
+    rdfs:domain  :Candidate ;
+    rdfs:range   :Skill ;
+    owl:inverseOf :isSkillOf ;
+    rdfs:label   "has skill"@en ;
+    rdfs:comment "Relates a candidate to a skill they possess."@en .
+
+:isSkillOf a owl:ObjectProperty ;
+    rdfs:domain  :Skill ;
+    rdfs:range   :Candidate ;
+    rdfs:label   "is skill of"@en ;
+    rdfs:comment "Inverse of hasSkill; relates a skill to the candidates who possess it."@en .
+
+### Job – Skill
+:requiresSkill a owl:ObjectProperty ;
+    rdfs:domain  :Job ;
+    rdfs:range   :Skill ;
+    rdfs:label   "requires skill"@en ;
+    rdfs:comment "Relates a job posting to a skill it requires from applicants."@en .
+
+### Job – Company
+:offeredBy a owl:ObjectProperty ;
+    rdfs:domain  :Job ;
+    rdfs:range   :Company ;
+    owl:inverseOf :offersJob ;
+    rdfs:label   "offered by"@en ;
+    rdfs:comment "Relates a job to the company that offers it."@en .
+
+:offersJob a owl:ObjectProperty ;
+    rdfs:domain  :Company ;
+    rdfs:range   :Job ;
+    rdfs:label   "offers job"@en ;
+    rdfs:comment "Inverse of offeredBy; relates a company to the jobs it offers."@en .
+
+### Candidate – Job (Application)
+:appliesTo a owl:ObjectProperty ;
+    rdfs:domain  :Candidate ;
+    rdfs:range   :Job ;
+    rdfs:label   "applies to"@en ;
+    rdfs:comment "Relates a candidate to a job they have formally applied for."@en .
+
+### Job – Candidate (Recommendation)
+:recommendedFor a owl:ObjectProperty ;
+    rdfs:domain  :Job ;
+    rdfs:range   :Candidate ;
+    rdfs:label   "recommended for"@en ;
+    rdfs:comment "Relates a job to a candidate who is recommended based on skill matching."@en .
+
+### Candidate / Job – ExperienceLevel
+:hasExperienceLevel a owl:ObjectProperty ;
+    rdfs:domain  :Candidate ;
+    rdfs:range   :ExperienceLevel ;
+    rdfs:label   "has experience level"@en ;
+    rdfs:comment "Relates a candidate to their professional seniority level."@en .
+
+:requiresExperienceLevel a owl:ObjectProperty ;
+    rdfs:domain  :Job ;
+    rdfs:range   :ExperienceLevel ;
+    rdfs:label   "requires experience level"@en ;
+    rdfs:comment "Relates a job to the minimum seniority level required."@en .
+
+### Job – JobCategory
+:belongsToCategory a owl:ObjectProperty ;
+    rdfs:domain  :Job ;
+    rdfs:range   :JobCategory ;
+    rdfs:label   "belongs to category"@en ;
+    rdfs:comment "Classifies a job under a broader occupational category."@en .
+
+##########################################################################
+### DATATYPE PROPERTIES
+##########################################################################
+
+:name a owl:DatatypeProperty ;
+    rdfs:domain  :Person ;
+    rdfs:range   xsd:string ;
+    rdfs:label   "name"@en ;
+    rdfs:comment "The full name of a person."@en .
+
+:jobTitle a owl:DatatypeProperty ;
+    rdfs:domain  :Job ;
+    rdfs:range   xsd:string ;
+    rdfs:label   "job title"@en ;
+    rdfs:comment "The official title of a job position."@en .
+
+:companyName a owl:DatatypeProperty ;
+    rdfs:domain  :Company ;
+    rdfs:range   xsd:string ;
+    rdfs:label   "company name"@en ;
+    rdfs:comment "The legal or trading name of the company."@en .
+
+:yearsOfExperience a owl:DatatypeProperty ;
+    rdfs:domain  :Candidate ;
+    rdfs:range   xsd:int ;
+    rdfs:label   "years of experience"@en ;
+    rdfs:comment "Total years of professional work experience of the candidate."@en .
+
+:jobDescription a owl:DatatypeProperty ;
+    rdfs:domain  :Job ;
+    rdfs:range   xsd:string ;
+    rdfs:label   "job description"@en ;
+    rdfs:comment "A textual description of the responsibilities and expectations for the job."@en .
+
+:email a owl:DatatypeProperty ;
+    rdfs:domain  :Person ;
+    rdfs:range   xsd:string ;
+    rdfs:label   "email"@en ;
+    rdfs:comment "The email address of a person."@en .
+
+:location a owl:DatatypeProperty ;
+    rdfs:domain  :Company ;
+    rdfs:range   xsd:string ;
+    rdfs:label   "location"@en ;
+    rdfs:comment "The city or country where the company is based."@en .
+
+##########################################################################
+### NAMED INDIVIDUALS — Skills
+##########################################################################
+
+### Technical Skills
+:Python a :TechnicalSkill ;
+    rdfs:label "Python"@en ;
+    skos:definition "Python programming language."@en .
+
+:MachineLearning a :TechnicalSkill ;
+    rdfs:label "Machine Learning"@en ;
+    skos:definition "Algorithms and statistical models enabling systems to learn from data."@en .
+
+:DataAnalysis a :TechnicalSkill ;
+    rdfs:label "Data Analysis"@en ;
+    skos:definition "Inspecting, cleansing, transforming, and modelling data to discover useful information."@en .
+
+:SQL a :TechnicalSkill ;
+    rdfs:label "SQL"@en ;
+    skos:definition "Structured Query Language for managing relational databases."@en .
+
+:DeepLearning a :TechnicalSkill ;
+    rdfs:label "Deep Learning"@en ;
+    skos:definition "A subset of machine learning using multi-layered neural networks."@en .
+
+:DataVisualization a :TechnicalSkill ;
+    rdfs:label "Data Visualization"@en ;
+    skos:definition "The graphical representation of data and information."@en .
+
+### Soft Skills
+:CommunicationSkill a :SoftSkill ;
+    rdfs:label "Communication"@en ;
+    skos:definition "The ability to convey information effectively in written and verbal form."@en .
+
+:ProblemSolving a :SoftSkill ;
+    rdfs:label "Problem Solving"@en ;
+    skos:definition "The capacity to find solutions to complex challenges."@en .
+
+##########################################################################
+### NAMED INDIVIDUALS — Experience Levels
+##########################################################################
+
+:Junior a :ExperienceLevel ;
+    rdfs:label "Junior"@en ;
+    skos:definition "0–2 years of professional experience."@en .
+
+:Mid a :ExperienceLevel ;
+    rdfs:label "Mid-Level"@en ;
+    skos:definition "3–5 years of professional experience."@en .
+
+:Senior a :ExperienceLevel ;
+    rdfs:label "Senior"@en ;
+    skos:definition "6 or more years of professional experience."@en .
+
+##########################################################################
+### NAMED INDIVIDUALS — Job Categories
+##########################################################################
+
+:DataScience a :JobCategory ;
+    rdfs:label "Data Science"@en .
+
+:SoftwareEngineering a :JobCategory ;
+    rdfs:label "Software Engineering"@en .
+
+##########################################################################
+### NAMED INDIVIDUALS — Companies
+##########################################################################
+
+:TechCorp a :Company ;
+    :companyName "TechCorp" ;
+    :location    "Istanbul, Turkey" .
+
+:DataHub a :Company ;
+    :companyName "DataHub Analytics" ;
+    :location    "Ankara, Turkey" .
+
+##########################################################################
+### NAMED INDIVIDUALS — Jobs
+##########################################################################
+
+:DataScientistJob a :Job ;
+    :jobTitle                "Data Scientist" ;
+    :jobDescription          "Develop and deploy machine learning models on large-scale datasets." ;
+    :requiresSkill           :Python , :MachineLearning , :SQL ;
+    :requiresExperienceLevel :Mid ;
+    :offeredBy               :TechCorp ;
+    :belongsToCategory       :DataScience .
+
+:JuniorDataAnalystJob a :Job ;
+    :jobTitle                "Junior Data Analyst" ;
+    :jobDescription          "Analyse business data and create reports to support decision-making." ;
+    :requiresSkill           :DataAnalysis , :SQL , :DataVisualization ;
+    :requiresExperienceLevel :Junior ;
+    :offeredBy               :DataHub ;
+    :belongsToCategory       :DataScience .
+
+:MLEngineerJob a :Job ;
+    :jobTitle                "Machine Learning Engineer" ;
+    :jobDescription          "Design, build, and maintain production ML pipelines and infrastructure." ;
+    :requiresSkill           :Python , :MachineLearning , :DeepLearning ;
+    :requiresExperienceLevel :Senior ;
+    :offeredBy               :TechCorp ;
+    :belongsToCategory       :DataScience .
+
+##########################################################################
+### NAMED INDIVIDUALS — Candidates
+##########################################################################
+
+:Naciye a :Candidate ;
+    :name                "Naciye Nur Akkuş" ;
+    :email               "naciye@example.com" ;
+    :hasSkill            :Python , :DataAnalysis , :DataVisualization ;
+    :hasExperienceLevel  :Junior ;
+    :yearsOfExperience   1 ;
+    :appliesTo           :JuniorDataAnalystJob .
+
+:Berat a :Candidate ;
+    :name                "Berat Yılmaz" ;
+    :email               "berat@example.com" ;
+    :hasSkill            :Python , :MachineLearning , :SQL ;
+    :hasExperienceLevel  :Mid ;
+    :yearsOfExperience   3 ;
+    :appliesTo           :DataScientistJob .
+
+:Zeynep a :Candidate ;
+    :name                "Elif Sude Yılmaz" ;
+    :email               "elifsude@example.com" ;
+    :hasSkill            :Python , :MachineLearning , :DeepLearning , :SQL ;
+    :hasExperienceLevel  :Senior ;
+    :yearsOfExperience   7 ;
+    :appliesTo           :MLEngineerJob .
+
+##########################################################################
+### RECOMMENDATION ASSERTIONS
+### (Derived from skill matching — in a full system these would be
+###  inferred by a SPARQL CONSTRUCT query or a reasoner rule)
+##########################################################################
+
+:DataScientistJob   :recommendedFor :Berat .
+:JuniorDataAnalystJob :recommendedFor :Naciye .
+:MLEngineerJob      :recommendedFor :Elif .
