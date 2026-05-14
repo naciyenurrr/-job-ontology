@@ -1,0 +1,9 @@
+# CQ11 — What skills is Naciye missing for DataScientistJob?
+# Change the candidate and job IRIs as needed.
+
+PREFIX : <http://www.example.org/jobontology#>
+
+SELECT ?missingSkill WHERE {
+  :DataScientistJob :requiresSkill ?missingSkill .
+  FILTER NOT EXISTS { :Naciye :hasSkill ?missingSkill }
+}
