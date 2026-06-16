@@ -1,0 +1,248 @@
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix :       <http://www.example.org/jobontology#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+##########################################################################
+### SHACL SHAPES — Job & Career Recommendation Ontology v2
+### Validates all named individuals against structural constraints.
+### Run with: pyshacl -s shapes.ttl -d job-ontology-v2.ttl
+##########################################################################
+
+# ── CandidateShape ────────────────────────────────────────────────────────
+:CandidateShape
+    a sh:NodeShape ;
+    sh:targetClass :Candidate ;
+    sh:name "Candidate Shape" ;
+    sh:description "Every Candidate must have a name, email, experience level, and at least one skill." ;
+
+    # name: required, xsd:string
+    sh:property [
+        sh:path     :name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name     "name" ;
+        sh:message  "A Candidate must have exactly one :name (xsd:string)." ;
+    ] ;
+
+    # email: required, xsd:string
+    sh:property [
+        sh:path     :email ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name     "email" ;
+        sh:message  "A Candidate must have exactly one :email (xsd:string)." ;
+    ] ;
+
+    # hasExperienceLevel: required, exactly one
+    sh:property [
+        sh:path     :hasExperienceLevel ;
+        sh:class    :ExperienceLevel ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name     "hasExperienceLevel" ;
+        sh:message  "A Candidate must have exactly one :hasExperienceLevel pointing to an :ExperienceLevel." ;
+    ] ;
+
+    # yearsOfExperience: required, non-negative integer
+    sh:property [
+        sh:path     :yearsOfExperience ;
+        sh:datatype xsd:int ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0 ;
+        sh:name     "yearsOfExperience" ;
+        sh:message  "A Candidate must have exactly one :yearsOfExperience (non-negative integer)." ;
+    ] ;
+
+    # hasSkill: at least one skill required
+    sh:property [
+        sh:path     :hasSkill ;
+        sh:class    :Skill ;
+        sh:minCount 1 ;
+        sh:name     "hasSkill" ;
+        sh:message  "A Candidate must possess at least one :Skill via :hasSkill." ;
+    ] .
+
+# ── JobShape ──────────────────────────────────────────────────────────────
+:JobShape
+    a sh:NodeShape ;
+    sh:targetClass :Job ;
+    sh:name "Job Shape" ;
+    sh:description "Every Job must have a title, description, experience level, at least one required skill, and exactly one offering company." ;
+
+    # jobTitle: required
+    sh:property [
+        sh:path     :jobTitle ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name     "jobTitle" ;
+        sh:message  "A Job must have exactly one :jobTitle (xsd:string)." ;
+    ] ;
+
+    # jobDescription: required
+    sh:property [
+        sh:path     :jobDescription ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:name     "jobDescription" ;
+        sh:message  "A Job must have at least one :jobDescription." ;
+    ] ;
+
+    # requiresSkill: at least one
+    sh:property [
+        sh:path     :requiresSkill ;
+        sh:class    :Skill ;
+        sh:minCount 1 ;
+        sh:name     "requiresSkill" ;
+        sh:message  "A Job must require at least one :Skill via :requiresSkill." ;
+    ] ;
+
+    # requiresExperienceLevel: exactly one
+    sh:property [
+        sh:path     :requiresExperienceLevel ;
+        sh:class    :ExperienceLevel ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name     "requiresExperienceLevel" ;
+        sh:message  "A Job must have exactly one :requiresExperienceLevel." ;
+    ] ;
+
+    # offeredBy: exactly one company
+    sh:property [
+        sh:path     :offeredBy ;
+        sh:class    :Company ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name     "offeredBy" ;
+        sh:message  "A Job must be offered by exactly one :Company via :offeredBy." ;
+    ] .
+
+# ── CompanyShape ──────────────────────────────────────────────────────────
+:CompanyShape
+    a sh:NodeShape ;
+    sh:targetClass :Company ;
+    sh:name "Company Shape" ;
+    sh:description "Every Company must have a companyName and location." ;
+
+    sh:property [
+        sh:path     :companyName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name     "companyName" ;
+        sh:message  "A Company must have exactly one :companyName." ;
+    ] ;
+
+    sh:property [
+        sh:path     :location ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name     "location" ;
+        sh:message  "A Company must have exactly one :location." ;
+    ] .
+
+# ── CertificationShape ────────────────────────────────────────────────────
+:CertificationShape
+    a sh:NodeShape ;
+    sh:targetClass :Certification ;
+    sh:name "Certification Shape" ;
+    sh:description "Every Certification must have a name, an issuing body, and certify at least one skill." ;
+
+    sh:property [
+        sh:path     :certificationName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name     "certificationName" ;
+        sh:message  "A Certification must have exactly one :certificationName." ;
+    ] ;
+
+    sh:property [
+        sh:path     :issuingBody ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name     "issuingBody" ;
+        sh:message  "A Certification must have exactly one :issuingBody." ;
+    ] ;
+
+    sh:property [
+        sh:path     :certifiesSkill ;
+        sh:class    :Skill ;
+        sh:minCount 1 ;
+        sh:name     "certifiesSkill" ;
+        sh:message  "A Certification must certify at least one :Skill." ;
+    ] .
+
+# ── SkillAssessmentShape ──────────────────────────────────────────────────
+:SkillAssessmentShape
+    a sh:NodeShape ;
+    sh:targetClass :SkillAssessment ;
+    sh:name "Skill Assessment Shape" ;
+    sh:description "Every SkillAssessment must link to exactly one skill and one proficiency level." ;
+
+    sh:property [
+        sh:path     :assessedSkill ;
+        sh:class    :Skill ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name     "assessedSkill" ;
+        sh:message  "A SkillAssessment must reference exactly one :assessedSkill." ;
+    ] ;
+
+    sh:property [
+        sh:path     :hasProficiency ;
+        sh:class    :SkillProficiency ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name     "hasProficiency" ;
+        sh:message  "A SkillAssessment must have exactly one :hasProficiency level." ;
+    ] .
+
+# ── ExperienceLevelShape ──────────────────────────────────────────────────
+:ExperienceLevelShape
+    a sh:NodeShape ;
+    sh:targetClass :ExperienceLevel ;
+    sh:name "Experience Level Shape" ;
+    sh:description "Every ExperienceLevel individual must have an rdfs:label." ;
+
+    sh:property [
+        sh:path     rdfs:label ;
+        sh:minCount 1 ;
+        sh:name     "label" ;
+        sh:message  "An ExperienceLevel must have at least one rdfs:label." ;
+    ] .
+
+# ── PersonShape ───────────────────────────────────────────────────────────
+:PersonShape
+    a sh:NodeShape ;
+    sh:targetClass :Person ;
+    sh:name "Person Shape" ;
+    sh:description "Every Person must have a name — enforced on both Candidate and Recruiter via the Person superclass." ;
+
+    sh:property [
+        sh:path     :name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:name     "name" ;
+        sh:message  "A Person (Candidate or Recruiter) must have at least one :name." ;
+    ] .
+
+# ── DisjointnessConstraint ────────────────────────────────────────────────
+# Note: OWL disjointness (owl:disjointWith) between :Candidate and :Recruiter
+# is already declared in the ontology. SHACL enforces it at the data level
+# by checking that no individual is typed as both.
+:CandidateNotRecruiterShape
+    a sh:NodeShape ;
+    sh:targetClass :Candidate ;
+    sh:name "Candidate-Recruiter Disjointness" ;
+    sh:not [
+        sh:class :Recruiter ;
+    ] ;
+    sh:message "An individual cannot be both a :Candidate and a :Recruiter (owl:disjointWith violated)." .
