@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Job & Career Recommendation Ontology – Documentation v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0d0f14;--surface:#13161d;--surface2:#1b1f2a;--border:#252a38;
+    --accent:#4f8ef7;--accent2:#a78bfa;--accent3:#34d399;--accent4:#fb923c;
+    --text:#e2e8f0;--muted:#8892a4;--heading:#f8fafc;--tag-bg:#1e2535;--code-bg:#10131a;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;display:flex;min-height:100vh}
+  nav{width:270px;min-height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0}
+  .nav-logo{padding:28px 24px 20px;border-bottom:1px solid var(--border)}
+  .nav-logo .logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
+  .nav-logo h1{font-family:'DM Serif Display',serif;font-size:15px;color:var(--heading);line-height:1.3}
+  .nav-logo .version-badge{display:inline-block;margin-top:6px;background:var(--tag-bg);border:1px solid var(--border);color:var(--accent);font-family:'DM Mono',monospace;font-size:11px;padding:2px 8px;border-radius:4px}
+  .nav-logo .v2-badge{display:inline-block;margin-top:4px;margin-left:4px;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);color:var(--accent3);font-family:'DM Mono',monospace;font-size:11px;padding:2px 8px;border-radius:4px}
+  nav ul{list-style:none;padding:16px 0;flex:1}
+  nav ul li a{display:flex;align-items:center;gap:10px;padding:9px 24px;color:var(--muted);text-decoration:none;font-size:13.5px;font-weight:500;border-left:2px solid transparent;transition:all .15s}
+  nav ul li a:hover,nav ul li a.active{color:var(--text);border-left-color:var(--accent);background:rgba(79,142,247,.07)}
+  nav ul li a .nav-dot{width:6px;height:6px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background .15s}
+  nav ul li a:hover .nav-dot,nav ul li a.active .nav-dot{background:var(--accent)}
+  .nav-section-label{padding:16px 24px 6px;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);opacity:.6}
+  .new-tag{font-size:9px;background:rgba(52,211,153,.15);color:var(--accent3);border:1px solid rgba(52,211,153,.3);padding:1px 5px;border-radius:3px;margin-left:4px}
+  main{flex:1;max-width:960px;padding:56px 60px;overflow-x:hidden}
+  .hero{border:1px solid var(--border);background:var(--surface);border-radius:16px;padding:40px 44px;margin-bottom:52px;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(79,142,247,.15) 0%,transparent 70%);pointer-events:none}
+  .hero-eyebrow{font-family:'DM Mono',monospace;font-size:11.5px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+  .hero h2{font-family:'DM Serif Display',serif;font-size:34px;color:var(--heading);line-height:1.2;margin-bottom:14px}
+  .hero p{color:var(--muted);max-width:640px;font-size:14.5px;margin-bottom:24px}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:24px;border-top:1px solid var(--border);padding-top:20px}
+  .hero-meta-item{display:flex;flex-direction:column;gap:3px}
+  .hero-meta-item .label{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .hero-meta-item .value{font-size:13.5px;color:var(--text);font-weight:500}
+  .hero-meta-item .value a{color:var(--accent);text-decoration:none}
+  .hero-meta-item .value a:hover{text-decoration:underline}
+  .changelog-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.25);border-radius:8px;padding:8px 14px;font-size:12.5px;color:var(--accent3);margin-bottom:20px}
+  section{margin-bottom:64px;scroll-margin-top:32px}
+  section h3{font-family:'DM Serif Display',serif;font-size:22px;color:var(--heading);margin-bottom:6px;display:flex;align-items:center;gap:10px}
+  section h3 .section-num{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent);background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.3);padding:2px 7px;border-radius:4px}
+  .section-divider{height:1px;background:var(--border);margin-bottom:28px}
+  .onto-table{width:100%;border-collapse:collapse;font-size:13.5px;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  .onto-table thead th{background:var(--surface2);color:var(--muted);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:12px 16px;text-align:left;border-bottom:1px solid var(--border)}
+  .onto-table tbody tr{border-bottom:1px solid var(--border);transition:background .12s}
+  .onto-table tbody tr:last-child{border-bottom:none}
+  .onto-table tbody tr:hover{background:var(--surface2)}
+  .onto-table tbody tr.new-row{background:rgba(52,211,153,.04)}
+  .onto-table td{padding:13px 16px;vertical-align:top;color:var(--text)}
+  .onto-table td:first-child{font-family:'DM Mono',monospace;font-size:12.5px;color:var(--accent3);white-space:nowrap}
+  .domain-tag,.range-tag{display:inline-block;font-family:'DM Mono',monospace;font-size:11px;background:var(--tag-bg);border:1px solid var(--border);color:var(--accent2);padding:1px 7px;border-radius:4px;margin:1px}
+  .type-badge{font-size:10px;background:rgba(79,142,247,.1);color:var(--accent);border:1px solid rgba(79,142,247,.25);padding:1px 7px;border-radius:4px;white-space:nowrap}
+  .sub-badge{font-size:10px;background:rgba(167,139,250,.1);color:var(--accent2);border:1px solid rgba(167,139,250,.25);padding:1px 7px;border-radius:4px}
+  .inv-badge{font-size:10px;background:rgba(52,211,153,.1);color:var(--accent3);border:1px solid rgba(52,211,153,.25);padding:1px 7px;border-radius:4px}
+  .v2-row-badge{font-size:9px;background:rgba(52,211,153,.15);color:var(--accent3);border:1px solid rgba(52,211,153,.3);padding:1px 6px;border-radius:3px;margin-left:6px}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;margin-top:4px}
+  .instance-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;transition:border-color .15s,transform .15s}
+  .instance-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .instance-card.new-card{border-color:rgba(52,211,153,.3)}
+  .card-type{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:600;margin-bottom:8px}
+  .card-name{font-family:'DM Mono',monospace;font-size:14px;color:var(--heading);margin-bottom:12px}
+  .card-prop{display:flex;flex-direction:column;gap:6px;font-size:12.5px}
+  .card-prop-row{display:flex;gap:8px;align-items:flex-start}
+  .prop-key{color:var(--muted);min-width:90px;flex-shrink:0}
+  .prop-val{color:var(--text);font-family:'DM Mono',monospace;font-size:11.5px;flex-wrap:wrap;display:flex;gap:4px}
+  .skill-chip{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);color:var(--accent3);font-family:'DM Mono',monospace;font-size:10.5px;padding:1px 7px;border-radius:4px}
+  .level-chip{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);color:var(--accent2);font-size:10.5px;padding:1px 7px;border-radius:4px}
+  .cert-chip{background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.2);color:var(--accent4);font-family:'DM Mono',monospace;font-size:10.5px;padding:1px 7px;border-radius:4px}
+  .cq-list{display:flex;flex-direction:column;gap:10px}
+  .cq-item{display:flex;gap:16px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;transition:border-color .15s}
+  .cq-item:hover{border-color:rgba(79,142,247,.4)}
+  .cq-item.new-cq{border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.03)}
+  .cq-id{font-family:'DM Mono',monospace;font-size:11.5px;color:var(--accent);background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.2);padding:2px 8px;border-radius:5px;white-space:nowrap;margin-top:1px}
+  .cq-text{font-size:14px;color:var(--text)}
+  .code-block{background:var(--code-bg);border:1px solid var(--border);border-radius:10px;padding:22px 24px;font-family:'DM Mono',monospace;font-size:12.5px;line-height:1.75;overflow-x:auto;color:#94a3b8;margin-top:8px}
+  .code-block .kw{color:#818cf8}
+  .code-block .cls{color:#7dd3fc}
+  .code-block .str{color:#86efac}
+  .code-block .cmt{color:#475569;font-style:italic}
+  .code-block .uri{color:#fda4af}
+  .ns-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 24px;display:flex;flex-direction:column;gap:8px}
+  .ns-row{display:flex;gap:16px;align-items:center;font-size:13px}
+  .ns-prefix{font-family:'DM Mono',monospace;color:var(--accent2);min-width:70px;font-size:12.5px}
+  .ns-uri{font-family:'DM Mono',monospace;color:var(--muted);font-size:12px}
+  .diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px}
+  .diff-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px}
+  .diff-box h4{font-size:13px;font-weight:600;margin-bottom:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .diff-box ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+  .diff-box li{font-family:'DM Mono',monospace;font-size:12px;color:var(--text);padding:4px 8px;background:var(--surface2);border-radius:5px}
+  .diff-box.v2 h4{color:var(--accent3)}
+  .diff-box.v2 li{border-left:2px solid var(--accent3)}
+  .diff-box.v1 h4{color:var(--muted)}
+  .diff-box.v1 li{border-left:2px solid var(--border)}
+  .info-box{background:rgba(79,142,247,.06);border:1px solid rgba(79,142,247,.2);border-radius:10px;padding:16px 20px;font-size:13.5px;color:var(--text);margin-top:12px}
+  .info-box strong{color:var(--accent)}
+  footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--border);font-size:12.5px;color:var(--muted);text-align:center}
+  @media(max-width:780px){body{flex-direction:column}nav{width:100%;height:auto;position:relative}main{padding:32px 20px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="logo-icon">🧠</div>
+    <h1>Job & Career<br>Recommendation Ontology</h1>
+    <span class="version-badge">v2.0 · OWL 2 DL</span>
+    <span class="v2-badge">Updated</span>
+  </div>
+  <ul>
+    <li class="nav-section-label">Overview</li>
+    <li><a href="#metadata" class="active"><span class="nav-dot"></span>Metadata</a></li>
+    <li><a href="#changelog"><span class="nav-dot"></span>Changelog <span class="new-tag">v2</span></a></li>
+    <li><a href="#namespaces"><span class="nav-dot"></span>Namespaces</a></li>
+    <li><a href="#description"><span class="nav-dot"></span>Description</a></li>
+    <li class="nav-section-label">Schema</li>
+    <li><a href="#classes"><span class="nav-dot"></span>Classes</a></li>
+    <li><a href="#obj-props"><span class="nav-dot"></span>Object Properties</a></li>
+    <li><a href="#data-props"><span class="nav-dot"></span>Datatype Properties</a></li>
+    <li class="nav-section-label">Instances</li>
+    <li><a href="#individuals"><span class="nav-dot"></span>Named Individuals</a></li>
+    <li><a href="#certifications"><span class="nav-dot"></span>Certifications <span class="new-tag">v2</span></a></li>
+    <li class="nav-section-label">Requirements</li>
+    <li><a href="#cqs"><span class="nav-dot"></span>Competency Questions</a></li>
+    <li><a href="#sparql"><span class="nav-dot"></span>SPARQL Examples</a></li>
+    <li><a href="#shacl"><span class="nav-dot"></span>SHACL Validation <span class="new-tag">v2</span></a></li>
+    <li class="nav-section-label">Tooling</li>
+    <li><a href="#widoco"><span class="nav-dot"></span>WIDOCO Guide</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="hero">
+    <div class="hero-eyebrow">Ontology Documentation — Version 2.0</div>
+    <h2>Job &amp; Career Recommendation Ontology</h2>
+    <p>An OWL 2 DL ontology for skill-based matching of job candidates with job postings. V2 adds skill proficiency levels, certifications, sector classification, SHACL validation, and LLM-powered instance population.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><span class="label">IRI</span><span class="value"><a href="http://www.example.org/jobontology">http://www.example.org/jobontology</a></span></div>
+      <div class="hero-meta-item"><span class="label">Version</span><span class="value">2.0</span></div>
+      <div class="hero-meta-item"><span class="label">Authors</span><span class="value">Naciye Nur Akkuş · Elif Sude Yılmaz</span></div>
+      <div class="hero-meta-item"><span class="label">Date</span><span class="value">12 May 2026</span></div>
+      <div class="hero-meta-item"><span class="label">GitHub</span><span class="value"><a href="https://github.com/naciyenurrr/-job-ontology">naciyenurrr/-job-ontology</a></span></div>
+      <div class="hero-meta-item"><span class="label">Profile</span><span class="value">OWL 2 DL — Turtle serialisation</span></div>
+    </div>
+  </div>
+
+  <!-- METADATA -->
+  <section id="metadata">
+    <h3><span class="section-num">§1</span> Ontology Metadata</h3>
+    <div class="section-divider"></div>
+    <table class="onto-table">
+      <thead><tr><th>Property</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>dc:title</td><td>Job and Career Recommendation Ontology</td></tr>
+        <tr><td>dc:description</td><td>An OWL 2 ontology for skill-based matching of job candidates with job postings. V2 adds skill proficiency levels, certifications, sector classification, LLM-populated instances, and alignment with schema.org.</td></tr>
+        <tr><td>dc:creator</td><td>Naciye Nur Akkuş · Elif Sude Yılmaz</td></tr>
+        <tr><td>dc:date</td><td>2026-05-12</td></tr>
+        <tr><td>dc:version</td><td>2.0</td></tr>
+        <tr><td>owl:versionIRI</td><td><code>http://www.example.org/jobontology/2.0</code></td></tr>
+        <tr><td>owl:priorVersion</td><td><code>http://www.example.org/jobontology/1.0</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- CHANGELOG -->
+  <section id="changelog">
+    <h3><span class="section-num">§2</span> What's New in Version 2.0</h3>
+    <div class="section-divider"></div>
+    <div class="diff-grid">
+      <div class="diff-box v1"><h4>Version 1.0 (baseline)</h4><ul>
+        <li>10 classes</li><li>10 object properties</li><li>7 datatype properties</li>
+        <li>3 candidates · 3 jobs</li><li>CQ1–CQ12</li><li>No external alignments</li>
+      </ul></div>
+      <div class="diff-box v2"><h4>Version 2.0 (current)</h4><ul>
+        <li>14 classes (+4 new)</li><li>18 object properties (+8)</li><li>13 datatype properties (+6)</li>
+        <li>5 candidates · 5 jobs (+2 each)</li><li>CQ1–CQ16 (+4 new)</li>
+        <li>ESCO · schema.org · FOAF · SKOS · DC</li>
+        <li>SHACL shapes file</li><li>LLM extraction pipeline</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <!-- NAMESPACES -->
+  <section id="namespaces">
+    <h3><span class="section-num">§3</span> Namespaces</h3>
+    <div class="section-divider"></div>
+    <div class="ns-box">
+      <div class="ns-row"><span class="ns-prefix">:</span><span class="ns-uri">http://www.example.org/jobontology#</span></div>
+      <div class="ns-row"><span class="ns-prefix">owl:</span><span class="ns-uri">http://www.w3.org/2002/07/owl#</span></div>
+      <div class="ns-row"><span class="ns-prefix">rdf:</span><span class="ns-uri">http://www.w3.org/1999/02/22-rdf-syntax-ns#</span></div>
+      <div class="ns-row"><span class="ns-prefix">rdfs:</span><span class="ns-uri">http://www.w3.org/2000/01/rdf-schema#</span></div>
+      <div class="ns-row"><span class="ns-prefix">xsd:</span><span class="ns-uri">http://www.w3.org/2001/XMLSchema#</span></div>
+      <div class="ns-row"><span class="ns-prefix">dc:</span><span class="ns-uri">http://purl.org/dc/elements/1.1/</span></div>
+      <div class="ns-row"><span class="ns-prefix">skos:</span><span class="ns-uri">http://www.w3.org/2004/02/skos/core#</span></div>
+      <div class="ns-row"><span class="ns-prefix">schema:</span><span class="ns-uri">https://schema.org/ <span style="color:var(--accent3);font-size:10px">★ v2</span></span></div>
+    </div>
+  </section>
+
+  <!-- DESCRIPTION -->
+  <section id="description">
+    <h3><span class="section-num">§4</span> Description</h3>
+    <div class="section-divider"></div>
+    <p style="color:var(--muted);font-size:14.5px;line-height:1.8">
+      This ontology models the job recruitment domain to enable automated, semantic matching between candidates and job postings.
+      V2 extends the model with <strong style="color:var(--text)">skill proficiency levels</strong> (Beginner / Intermediate / Expert),
+      <strong style="color:var(--text)">certifications</strong>, <strong style="color:var(--text)">sector classification</strong>,
+      and salary / remote flags. Instances are populated via an <strong style="color:var(--text)">LLM extraction pipeline</strong>
+      that parses raw job postings and CVs into Turtle triples.
+      The ontology aligns with <em>ESCO</em>, <em>schema.org</em>, <em>FOAF</em>, and <em>SKOS</em>.
+      All instances are validated by <strong style="color:var(--text)">SHACL shape constraints</strong> and verified consistent
+      by the <strong style="color:var(--text)">HermiT 1.4.3</strong> reasoner.
+    </p>
+  </section>
+
+  <!-- CLASSES -->
+  <section id="classes">
+    <h3><span class="section-num">§5</span> Classes</h3>
+    <div class="section-divider"></div>
+    <table class="onto-table">
+      <thead><tr><th>Class IRI</th><th>Subclass of</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>:Person</td><td>—</td><td>A human being who participates in the recruitment process.</td></tr>
+        <tr><td>:Candidate</td><td><span class="sub-badge">:Person</span> <span class="inv-badge">⊥ Recruiter</span></td><td>A person seeking employment. Disjoint with Recruiter.</td></tr>
+        <tr><td>:Recruiter</td><td><span class="sub-badge">:Person</span></td><td>A person responsible for finding and evaluating candidates.</td></tr>
+        <tr><td>:Job</td><td>—</td><td>A specific employment position offered by a company.</td></tr>
+        <tr><td>:Company</td><td>—</td><td>An organisation that posts job openings and employs candidates.</td></tr>
+        <tr><td>:Skill</td><td>—</td><td>A competency, technical ability, or knowledge area relevant to employment.</td></tr>
+        <tr><td>:TechnicalSkill</td><td><span class="sub-badge">:Skill</span></td><td>A skill relating to programming languages, tools, or engineering practices.</td></tr>
+        <tr><td>:SoftSkill</td><td><span class="sub-badge">:Skill</span></td><td>An interpersonal or communication skill.</td></tr>
+        <tr><td>:ExperienceLevel</td><td>—</td><td>A classification of professional seniority (Junior / Mid / Senior).</td></tr>
+        <tr><td>:JobCategory</td><td>—</td><td>A broad occupational grouping (e.g., Data Science).</td></tr>
+        <tr class="new-row"><td>:SkillProficiency <span class="v2-row-badge">v2</span></td><td>—</td><td>Degree of mastery: Beginner / Intermediate / Expert.</td></tr>
+        <tr class="new-row"><td>:SkillAssessment <span class="v2-row-badge">v2</span></td><td>—</td><td>Reification node: Candidate + Skill + Proficiency.</td></tr>
+        <tr class="new-row"><td>:Certification <span class="v2-row-badge">v2</span></td><td>—</td><td>Formal credential attesting mastery of a skill or domain.</td></tr>
+        <tr class="new-row"><td>:Sector <span class="v2-row-badge">v2</span></td><td>—</td><td>Industry vertical (TechSector, FinTech, HealthTech, ECommerce).</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- OBJECT PROPERTIES -->
+  <section id="obj-props">
+    <h3><span class="section-num">§6</span> Object Properties</h3>
+    <div class="section-divider"></div>
+    <table class="onto-table">
+      <thead><tr><th>Property</th><th>Domain</th><th>Range</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>:hasSkill</td><td><span class="domain-tag">:Candidate</span></td><td><span class="range-tag">:Skill</span></td><td><span class="inv-badge">inv: isSkillOf</span></td></tr>
+        <tr><td>:isSkillOf</td><td><span class="domain-tag">:Skill</span></td><td><span class="range-tag">:Candidate</span></td><td><span class="inv-badge">inv: hasSkill</span></td></tr>
+        <tr><td>:requiresSkill</td><td><span class="domain-tag">:Job</span></td><td><span class="range-tag">:Skill</span></td><td>—</td></tr>
+        <tr><td>:offeredBy</td><td><span class="domain-tag">:Job</span></td><td><span class="range-tag">:Company</span></td><td><span class="inv-badge">inv: offersJob</span></td></tr>
+        <tr><td>:offersJob</td><td><span class="domain-tag">:Company</span></td><td><span class="range-tag">:Job</span></td><td><span class="inv-badge">inv: offeredBy</span></td></tr>
+        <tr><td>:appliesTo</td><td><span class="domain-tag">:Candidate</span></td><td><span class="range-tag">:Job</span></td><td>—</td></tr>
+        <tr><td>:recommendedFor</td><td><span class="domain-tag">:Job</span></td><td><span class="range-tag">:Candidate</span></td><td>Skill-match recommendation</td></tr>
+        <tr><td>:hasExperienceLevel</td><td><span class="domain-tag">:Candidate</span></td><td><span class="range-tag">:ExperienceLevel</span></td><td>—</td></tr>
+        <tr><td>:requiresExperienceLevel</td><td><span class="domain-tag">:Job</span></td><td><span class="range-tag">:ExperienceLevel</span></td><td>—</td></tr>
+        <tr><td>:belongsToCategory</td><td><span class="domain-tag">:Job</span></td><td><span class="range-tag">:JobCategory</span></td><td>—</td></tr>
+        <tr class="new-row"><td>:hasSkillAssessment <span class="v2-row-badge">v2</span></td><td><span class="domain-tag">:Candidate</span></td><td><span class="range-tag">:SkillAssessment</span></td><td>—</td></tr>
+        <tr class="new-row"><td>:assessedSkill <span class="v2-row-badge">v2</span></td><td><span class="domain-tag">:SkillAssessment</span></td><td><span class="range-tag">:Skill</span></td><td>—</td></tr>
+        <tr class="new-row"><td>:hasProficiency <span class="v2-row-badge">v2</span></td><td><span class="domain-tag">:SkillAssessment</span></td><td><span class="range-tag">:SkillProficiency</span></td><td>—</td></tr>
+        <tr class="new-row"><td>:holdsCertification <span class="v2-row-badge">v2</span></td><td><span class="domain-tag">:Candidate</span></td><td><span class="range-tag">:Certification</span></td><td>—</td></tr>
+        <tr class="new-row"><td>:certifiesSkill <span class="v2-row-badge">v2</span></td><td><span class="domain-tag">:Certification</span></td><td><span class="range-tag">:Skill</span></td><td>—</td></tr>
+        <tr class="new-row"><td>:requiresCertification <span class="v2-row-badge">v2</span></td><td><span class="domain-tag">:Job</span></td><td><span class="range-tag">:Certification</span></td><td>—</td></tr>
+        <tr class="new-row"><td>:operatesInSector <span class="v2-row-badge">v2</span></td><td><span class="domain-tag">:Company</span></td><td><span class="range-tag">:Sector</span></td><td>—</td></tr>
+        <tr class="new-row"><td>:targetsSector <span class="v2-row-badge">v2</span></td><td><span class="domain-tag">:Job</span></td><td><span class="range-tag">:Sector</span></td><td>—</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- DATATYPE PROPERTIES -->
+  <section id="data-props">
+    <h3><span class="section-num">§7</span> Datatype Properties</h3>
+    <div class="section-divider"></div>
+    <table class="onto-table">
+      <thead><tr><th>Property</th><th>Domain</th><th>Range</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>:name</td><td><span class="domain-tag">:Person</span></td><td><span class="range-tag">xsd:string</span></td><td>Full name.</td></tr>
+        <tr><td>:email</td><td><span class="domain-tag">:Person</span></td><td><span class="range-tag">xsd:string</span></td><td>Email address.</td></tr>
+        <tr><td>:jobTitle</td><td><span class="domain-tag">:Job</span></td><td><span class="range-tag">xsd:string</span></td><td>Official job title.</td></tr>
+        <tr><td>:jobDescription</td><td><span class="domain-tag">:Job</span></td><td><span class="range-tag">xsd:string</span></td><td>Responsibilities and expectations.</td></tr>
+        <tr><td>:companyName</td><td><span class="domain-tag">:Company</span></td><td><span class="range-tag">xsd:string</span></td><td>Legal or trading name.</td></tr>
+        <tr><td>:location</td><td><span class="domain-tag">:Company</span></td><td><span class="range-tag">xsd:string</span></td><td>City or country.</td></tr>
+        <tr><td>:yearsOfExperience</td><td><span class="domain-tag">:Candidate</span></td><td><span class="range-tag">xsd:int</span></td><td>Total years of professional experience.</td></tr>
+        <tr class="new-row"><td>:certificationName <span class="v2-row-badge">v2</span></td><td><span class="domain-tag">:Certification</span></td><td><span class="range-tag">xsd:string</span></td><td>Full name of the certification.</td></tr>
+        <tr class="new-row"><td>:issuingBody <span class="v2-row-badge">v2</span></td><td><span class="domain-tag">:Certification</span></td><td><span class="range-tag">xsd:string</span></td><td>Organisation that issued the certificate.</td></tr>
+        <tr class="new-row"><td>:issueDate <span class="v2-row-badge">v2</span></td><td><span class="domain-tag">:Certification</span></td><td><span class="range-tag">xsd:date</span></td><td>Issue date.</td></tr>
+        <tr class="new-row"><td>:expiryDate <span class="v2-row-badge">v2</span></td><td><span class="domain-tag">:Certification</span></td><td><span class="range-tag">xsd:date</span></td><td>Expiry date (if applicable).</td></tr>
+        <tr class="new-row"><td>:salary <span class="v2-row-badge">v2</span></td><td><span class="domain-tag">:Job</span></td><td><span class="range-tag">xsd:string</span></td><td>Indicative salary range.</td></tr>
+        <tr class="new-row"><td>:remote <span class="v2-row-badge">v2</span></td><td><span class="domain-tag">:Job</span></td><td><span class="range-tag">xsd:boolean</span></td><td>Whether the position is remote.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- INDIVIDUALS -->
+  <section id="individuals">
+    <h3><span class="section-num">§8</span> Named Individuals — Candidates &amp; Jobs</h3>
+    <div class="section-divider"></div>
+    <div class="card-grid">
+      <div class="instance-card"><div class="card-type">Candidate</div><div class="card-name">:Naciye</div><div class="card-prop">
+        <div class="card-prop-row"><span class="prop-key">name</span><span class="prop-val">Naciye Nur Akkuş</span></div>
+        <div class="card-prop-row"><span class="prop-key">skills</span><span class="prop-val"><span class="skill-chip">Python</span><span class="skill-chip">DataAnalysis</span><span class="skill-chip">DataViz</span><span class="skill-chip">Tableau</span><span class="skill-chip">SQL</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">level</span><span class="prop-val"><span class="level-chip">Junior</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">cert</span><span class="prop-val"><span class="cert-chip">TableauDesktop</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">exp</span><span class="prop-val">1 year</span></div>
+      </div></div>
+      <div class="instance-card"><div class="card-type">Candidate</div><div class="card-name">:Berat</div><div class="card-prop">
+        <div class="card-prop-row"><span class="prop-key">name</span><span class="prop-val">Berat Yılmaz</span></div>
+        <div class="card-prop-row"><span class="prop-key">skills</span><span class="prop-val"><span class="skill-chip">Python</span><span class="skill-chip">ML</span><span class="skill-chip">SQL</span><span class="skill-chip">DataAnalysis</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">level</span><span class="prop-val"><span class="level-chip">Mid</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">exp</span><span class="prop-val">3 years</span></div>
+      </div></div>
+      <div class="instance-card"><div class="card-type">Candidate</div><div class="card-name">:Zeynep</div><div class="card-prop">
+        <div class="card-prop-row"><span class="prop-key">name</span><span class="prop-val">Zeynep Arslan</span></div>
+        <div class="card-prop-row"><span class="prop-key">skills</span><span class="prop-val"><span class="skill-chip">Python</span><span class="skill-chip">ML</span><span class="skill-chip">DeepLearning</span><span class="skill-chip">SQL</span><span class="skill-chip">Cloud</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">level</span><span class="prop-val"><span class="level-chip">Senior</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">cert</span><span class="prop-val"><span class="cert-chip">GoogleML</span><span class="cert-chip">AWSDA</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">exp</span><span class="prop-val">7 years</span></div>
+      </div></div>
+      <div class="instance-card new-card"><div class="card-type">Candidate <span class="new-tag">v2</span></div><div class="card-name">:Cem</div><div class="card-prop">
+        <div class="card-prop-row"><span class="prop-key">name</span><span class="prop-val">Cem Kaya</span></div>
+        <div class="card-prop-row"><span class="prop-key">skills</span><span class="prop-val"><span class="skill-chip">Python</span><span class="skill-chip">SQL</span><span class="skill-chip">Spark</span><span class="skill-chip">Cloud</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">level</span><span class="prop-val"><span class="level-chip">Mid</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">cert</span><span class="prop-val"><span class="cert-chip">AWSDA</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">exp</span><span class="prop-val">4 years</span></div>
+      </div></div>
+      <div class="instance-card new-card"><div class="card-type">Candidate <span class="new-tag">v2</span></div><div class="card-name">:Selin</div><div class="card-prop">
+        <div class="card-prop-row"><span class="prop-key">name</span><span class="prop-val">Selin Demir</span></div>
+        <div class="card-prop-row"><span class="prop-key">skills</span><span class="prop-val"><span class="skill-chip">Python</span><span class="skill-chip">NLP</span><span class="skill-chip">DeepLearning</span><span class="skill-chip">ML</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">level</span><span class="prop-val"><span class="level-chip">Senior</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">exp</span><span class="prop-val">6 years</span></div>
+      </div></div>
+      <div class="instance-card"><div class="card-type">Job</div><div class="card-name">:DataScientistJob</div><div class="card-prop">
+        <div class="card-prop-row"><span class="prop-key">title</span><span class="prop-val">Data Scientist</span></div>
+        <div class="card-prop-row"><span class="prop-key">requires</span><span class="prop-val"><span class="skill-chip">Python</span><span class="skill-chip">ML</span><span class="skill-chip">SQL</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">level</span><span class="prop-val"><span class="level-chip">Mid</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">company</span><span class="prop-val">TechCorp</span></div>
+      </div></div>
+      <div class="instance-card"><div class="card-type">Job</div><div class="card-name">:JuniorDataAnalystJob</div><div class="card-prop">
+        <div class="card-prop-row"><span class="prop-key">title</span><span class="prop-val">Junior Data Analyst</span></div>
+        <div class="card-prop-row"><span class="prop-key">requires</span><span class="prop-val"><span class="skill-chip">DataAnalysis</span><span class="skill-chip">SQL</span><span class="skill-chip">Tableau</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">cert req.</span><span class="prop-val"><span class="cert-chip">TableauDesktop</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">remote</span><span class="prop-val">Yes ✓</span></div>
+      </div></div>
+      <div class="instance-card"><div class="card-type">Job</div><div class="card-name">:MLEngineerJob</div><div class="card-prop">
+        <div class="card-prop-row"><span class="prop-key">title</span><span class="prop-val">ML Engineer</span></div>
+        <div class="card-prop-row"><span class="prop-key">requires</span><span class="prop-val"><span class="skill-chip">Python</span><span class="skill-chip">ML</span><span class="skill-chip">DeepLearning</span><span class="skill-chip">Cloud</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">cert req.</span><span class="prop-val"><span class="cert-chip">GoogleML</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">level</span><span class="prop-val"><span class="level-chip">Senior</span></span></div>
+      </div></div>
+      <div class="instance-card new-card"><div class="card-type">Job <span class="new-tag">v2</span></div><div class="card-name">:DataEngineerJob</div><div class="card-prop">
+        <div class="card-prop-row"><span class="prop-key">title</span><span class="prop-val">Data Engineer</span></div>
+        <div class="card-prop-row"><span class="prop-key">requires</span><span class="prop-val"><span class="skill-chip">Python</span><span class="skill-chip">SQL</span><span class="skill-chip">Spark</span><span class="skill-chip">Cloud</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">sector</span><span class="prop-val">FinTech</span></div>
+        <div class="card-prop-row"><span class="prop-key">remote</span><span class="prop-val">Yes ✓</span></div>
+      </div></div>
+      <div class="instance-card new-card"><div class="card-type">Job <span class="new-tag">v2</span></div><div class="card-name">:NLPResearcherJob</div><div class="card-prop">
+        <div class="card-prop-row"><span class="prop-key">title</span><span class="prop-val">NLP Research Scientist</span></div>
+        <div class="card-prop-row"><span class="prop-key">requires</span><span class="prop-val"><span class="skill-chip">Python</span><span class="skill-chip">NLP</span><span class="skill-chip">DeepLearning</span><span class="skill-chip">ML</span></span></div>
+        <div class="card-prop-row"><span class="prop-key">sector</span><span class="prop-val">FinTech</span></div>
+        <div class="card-prop-row"><span class="prop-key">remote</span><span class="prop-val">Yes ✓</span></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications">
+    <h3><span class="section-num">§9</span> Certifications <span style="font-size:13px;color:var(--accent3);margin-left:8px">★ New in v2</span></h3>
+    <div class="section-divider"></div>
+    <table class="onto-table">
+      <thead><tr><th>IRI</th><th>Name</th><th>Issuing Body</th><th>Certifies Skills</th></tr></thead>
+      <tbody>
+        <tr><td>:GoogleMLCert</td><td>Google Professional ML Engineer</td><td>Google Cloud</td><td><span class="skill-chip">MachineLearning</span> <span class="skill-chip">Python</span></td></tr>
+        <tr><td>:AWSDACert</td><td>AWS Certified Data Analytics – Specialty</td><td>Amazon Web Services</td><td><span class="skill-chip">DataAnalysis</span> <span class="skill-chip">CloudComputing</span> <span class="skill-chip">SQL</span></td></tr>
+        <tr><td>:TableauDesktopCert</td><td>Tableau Desktop Specialist</td><td>Salesforce / Tableau</td><td><span class="skill-chip">Tableau</span> <span class="skill-chip">DataVisualization</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- CQs -->
+  <section id="cqs">
+    <h3><span class="section-num">§10</span> Competency Questions</h3>
+    <div class="section-divider"></div>
+    <div class="cq-list">
+      <div class="cq-item"><span class="cq-id">CQ1</span><span class="cq-text">What skills does a given candidate possess?</span></div>
+      <div class="cq-item"><span class="cq-id">CQ2</span><span class="cq-text">What skills are required for a given job position?</span></div>
+      <div class="cq-item"><span class="cq-id">CQ3</span><span class="cq-text">Which candidates have <em>all</em> the skills required by a given job?</span></div>
+      <div class="cq-item"><span class="cq-id">CQ4</span><span class="cq-text">Which jobs match the skills of a given candidate?</span></div>
+      <div class="cq-item"><span class="cq-id">CQ5</span><span class="cq-text">What is the experience level of a given candidate?</span></div>
+      <div class="cq-item"><span class="cq-id">CQ6</span><span class="cq-text">What experience level does a given job require?</span></div>
+      <div class="cq-item"><span class="cq-id">CQ7</span><span class="cq-text">Which company offers a given job?</span></div>
+      <div class="cq-item"><span class="cq-id">CQ8</span><span class="cq-text">Which jobs does a given company offer?</span></div>
+      <div class="cq-item"><span class="cq-id">CQ9</span><span class="cq-text">Has a given candidate applied for a given job?</span></div>
+      <div class="cq-item"><span class="cq-id">CQ10</span><span class="cq-text">Which candidates are recommended for a given job?</span></div>
+      <div class="cq-item"><span class="cq-id">CQ11</span><span class="cq-text">What skills is a candidate missing for a target job (skill gap)?</span></div>
+      <div class="cq-item"><span class="cq-id">CQ12</span><span class="cq-text">How many years of experience does a candidate have?</span></div>
+      <div class="cq-item new-cq"><span class="cq-id">CQ13</span><span class="cq-text">What is the proficiency level of a candidate for each skill? <span style="color:var(--accent3);font-size:12px">★ v2</span></span></div>
+      <div class="cq-item new-cq"><span class="cq-id">CQ14</span><span class="cq-text">Which certifications does a candidate hold? <span style="color:var(--accent3);font-size:12px">★ v2</span></span></div>
+      <div class="cq-item new-cq"><span class="cq-id">CQ15</span><span class="cq-text">Which jobs require a specific certification? <span style="color:var(--accent3);font-size:12px">★ v2</span></span></div>
+      <div class="cq-item new-cq"><span class="cq-id">CQ16</span><span class="cq-text">Which candidates hold all certifications required by a given job? <span style="color:var(--accent3);font-size:12px">★ v2</span></span></div>
+    </div>
+  </section>
+
+  <!-- SPARQL -->
+  <section id="sparql">
+    <h3><span class="section-num">§11</span> SPARQL Example Queries</h3>
+    <div class="section-divider"></div>
+    <p style="color:var(--muted);font-size:13.5px;margin-bottom:18px"><strong style="color:var(--text)">CQ13</strong> — Skill proficiency levels of Zeynep:</p>
+    <div class="code-block"><span class="kw">PREFIX</span> : <span class="uri">&lt;http://www.example.org/jobontology#&gt;</span>
+
+<span class="kw">SELECT</span> ?skill ?level <span class="kw">WHERE</span> {
+  :Zeynep :hasSkillAssessment ?sa .
+  ?sa :assessedSkill ?skill ;
+      :hasProficiency ?level .
+}</div>
+
+    <p style="color:var(--muted);font-size:13.5px;margin-top:28px;margin-bottom:18px"><strong style="color:var(--text)">CQ16</strong> — Candidates meeting all cert requirements for MLEngineerJob:</p>
+    <div class="code-block"><span class="kw">PREFIX</span> : <span class="uri">&lt;http://www.example.org/jobontology#&gt;</span>
+
+<span class="kw">SELECT</span> ?candidate ?name <span class="kw">WHERE</span> {
+  ?candidate a :Candidate ; :name ?name .
+  <span class="kw">FILTER NOT EXISTS</span> {
+    :MLEngineerJob :requiresCertification ?cert .
+    <span class="kw">FILTER NOT EXISTS</span> { ?candidate :holdsCertification ?cert }
+  }
+}</div>
+
+    <p style="color:var(--muted);font-size:13.5px;margin-top:28px;margin-bottom:18px"><strong style="color:var(--text)">CQ11</strong> — Skill gap: Naciye vs. DataScientistJob:</p>
+    <div class="code-block"><span class="kw">PREFIX</span> : <span class="uri">&lt;http://www.example.org/jobontology#&gt;</span>
+
+<span class="kw">SELECT</span> ?missingSkill <span class="kw">WHERE</span> {
+  :DataScientistJob :requiresSkill ?missingSkill .
+  <span class="kw">FILTER NOT EXISTS</span> { :Naciye :hasSkill ?missingSkill }
+}</div>
+  </section>
+
+  <!-- SHACL -->
+  <section id="shacl">
+    <h3><span class="section-num">§12</span> SHACL Validation <span style="font-size:13px;color:var(--accent3);margin-left:8px">★ New in v2</span></h3>
+    <div class="section-divider"></div>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:20px">SHACL shape constraints are defined in <code>shacl/shapes.ttl</code>. Run validation with:</p>
+    <div class="code-block">pip install pyshacl
+pyshacl -s shacl/shapes.ttl -d job-ontology-v2.ttl</div>
+    <div class="info-box" style="margin-top:20px">
+      <strong>Shapes defined:</strong> CandidateShape · JobShape · CompanyShape · CertificationShape · SkillAssessmentShape · ExperienceLevelShape · PersonShape · CandidateNotRecruiterShape (disjointness)
+    </div>
+  </section>
+
+  <!-- WIDOCO -->
+  <section id="widoco">
+    <h3><span class="section-num">§13</span> Generating Docs with WIDOCO</h3>
+    <div class="section-divider"></div>
+    <div class="code-block">java -jar widoco.jar \
+  -ontFile job-ontology-v2.ttl \
+  -outFolder docs/ \
+  -rewriteAll \
+  -getOntologyMetadata \
+  -lang en \
+  -webVowl \
+  -noPlaceholders</div>
+    <div class="info-box" style="margin-top:20px">
+      Publish via <strong>GitHub Pages → Settings → Pages → Source: /docs</strong>. Live at <strong>https://naciyenurrr.github.io/-job-ontology/</strong>
+    </div>
+  </section>
+
+  <footer>Generated for <strong>Knowledge Engineering and Ontologies</strong> · Spring 2026 · Naciye Nur Akkuş &amp; Elif Sude Yılmaz</footer>
+</main>
+
+<script>
+  const sections=document.querySelectorAll('section[id]'),links=document.querySelectorAll('nav a');
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('active'));const a=document.querySelector(`nav a[href="#${e.target.id}"]`);if(a)a.classList.add('active')}})},{threshold:0.3});
+  sections.forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>
