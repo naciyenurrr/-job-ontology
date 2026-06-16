@@ -1,0 +1,8 @@
+# CQ2 — What skills are required for a given job position?
+# Change :DataScientistJob to any job IRI to query a different job.
+
+PREFIX : <http://www.example.org/jobontology#>
+
+SELECT ?skill WHERE {
+    :DataScientistJob :requiresSkill ?skill .
+}

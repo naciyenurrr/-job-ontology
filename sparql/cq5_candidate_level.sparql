@@ -1,0 +1,11 @@
+# CQ5 — What is the experience level of a given candidate?
+# Change :Naciye to any candidate IRI to query a different person.
+
+PREFIX : <http://www.example.org/jobontology#>
+
+SELECT ?candidate ?name ?level WHERE {
+    ?candidate a :Candidate ;
+               :name ?name ;
+               :hasExperienceLevel ?level .
+    FILTER (?candidate = :Naciye)
+}

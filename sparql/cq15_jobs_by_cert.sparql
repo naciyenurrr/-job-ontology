@@ -1,0 +1,12 @@
+# CQ15 — Which jobs require a specific certification?
+# Change :GoogleMLCert to any certification IRI as needed.
+
+PREFIX : <http://www.example.org/jobontology#>
+
+SELECT ?job ?title ?certName WHERE {
+    ?job a :Job ;
+         :jobTitle ?title ;
+         :requiresCertification ?cert .
+    ?cert :certificationName ?certName .
+    FILTER (?cert = :GoogleMLCert)
+}

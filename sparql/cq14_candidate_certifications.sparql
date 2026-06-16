@@ -1,0 +1,13 @@
+# CQ14 — Which certifications does a candidate hold?
+# Change :Zeynep to any candidate IRI as needed.
+
+PREFIX : <http://www.example.org/jobontology#>
+
+SELECT ?candidate ?name ?cert ?certName ?issuingBody WHERE {
+    ?candidate a :Candidate ;
+               :name ?name ;
+               :holdsCertification ?cert .
+    ?cert :certificationName ?certName ;
+          :issuingBody ?issuingBody .
+    FILTER (?candidate = :Zeynep)
+}

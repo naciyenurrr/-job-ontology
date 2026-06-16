@@ -1,0 +1,14 @@
+# CQ9 — Has a given candidate applied for a given job?
+# Change :Naciye and :JuniorDataAnalystJob as needed.
+
+PREFIX : <http://www.example.org/jobontology#>
+
+ASK {
+    :Naciye :appliesTo :JuniorDataAnalystJob .
+}
+
+# ── Alternative: list all applications for a candidate ──
+# SELECT ?job ?title WHERE {
+#     :Naciye :appliesTo ?job .
+#     ?job :jobTitle ?title .
+# }

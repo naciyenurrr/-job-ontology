@@ -1,0 +1,15 @@
+# CQ3 — Which candidates have ALL the skills required by a given job?
+# Change :DataScientistJob to any job IRI as needed.
+
+PREFIX : <http://www.example.org/jobontology#>
+
+SELECT ?candidate ?name WHERE {
+    ?candidate a :Candidate ;
+               :name ?name .
+    FILTER NOT EXISTS {
+        :DataScientistJob :requiresSkill ?requiredSkill .
+        FILTER NOT EXISTS {
+            ?candidate :hasSkill ?requiredSkill .
+        }
+    }
+}

@@ -1,0 +1,12 @@
+# CQ7 — Which company offers a given job?
+# Change :DataScientistJob to any job IRI as needed.
+
+PREFIX : <http://www.example.org/jobontology#>
+
+SELECT ?job ?title ?company ?companyName WHERE {
+    ?job a :Job ;
+         :jobTitle ?title ;
+         :offeredBy ?company .
+    ?company :companyName ?companyName .
+    FILTER (?job = :DataScientistJob)
+}

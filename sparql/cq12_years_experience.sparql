@@ -1,0 +1,12 @@
+# CQ12 — How many years of experience does a candidate have?
+# Returns all candidates with their experience years, sorted descending.
+
+PREFIX : <http://www.example.org/jobontology#>
+
+SELECT ?candidate ?name ?years ?level WHERE {
+    ?candidate a :Candidate ;
+               :name ?name ;
+               :yearsOfExperience ?years ;
+               :hasExperienceLevel ?level .
+}
+ORDER BY DESC(?years)

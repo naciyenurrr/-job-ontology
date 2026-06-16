@@ -1,0 +1,11 @@
+# CQ6 — What experience level does a given job require?
+# Change :MLEngineerJob to any job IRI as needed.
+
+PREFIX : <http://www.example.org/jobontology#>
+
+SELECT ?job ?title ?requiredLevel WHERE {
+    ?job a :Job ;
+         :jobTitle ?title ;
+         :requiresExperienceLevel ?requiredLevel .
+    FILTER (?job = :MLEngineerJob)
+}

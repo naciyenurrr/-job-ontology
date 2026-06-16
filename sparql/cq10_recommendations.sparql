@@ -1,0 +1,9 @@
+# CQ10 — Which candidates are recommended for a given job?
+# Change :DataScientistJob to any job IRI as needed.
+
+PREFIX : <http://www.example.org/jobontology#>
+
+SELECT ?candidate ?name WHERE {
+    :DataScientistJob :recommendedFor ?candidate .
+    ?candidate :name ?name .
+}

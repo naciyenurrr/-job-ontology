@@ -1,0 +1,9 @@
+# CQ8 — Which jobs does a given company offer?
+# Change :TechCorp to any company IRI as needed.
+
+PREFIX : <http://www.example.org/jobontology#>
+
+SELECT ?job ?title WHERE {
+    :TechCorp :offersJob ?job .
+    ?job :jobTitle ?title .
+}
