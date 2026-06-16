@@ -1,0 +1,9 @@
+job_id,job_title,company,location,experience_level,required_skills,salary_range_try,remote,sector
+J001,Data Scientist,TechCorp,"Istanbul, Turkey",Mid,"Python;MachineLearning;SQL","80000-110000",false,Technology
+J002,Junior Data Analyst,DataHub Analytics,"Ankara, Turkey",Junior,"DataAnalysis;SQL;DataVisualization;Tableau","40000-55000",true,Technology
+J003,Machine Learning Engineer,TechCorp,"Istanbul, Turkey",Senior,"Python;MachineLearning;DeepLearning;CloudComputing","150000-200000",false,Technology
+J004,Data Engineer,FinAI Solutions,"Istanbul, Turkey",Mid,"Python;SQL;Spark;CloudComputing","100000-130000",true,FinTech
+J005,NLP Research Scientist,FinAI Solutions,"Istanbul, Turkey",Senior,"Python;NLP;DeepLearning;MachineLearning","160000-210000",true,FinTech
+J006,Business Intelligence Analyst,DataHub Analytics,"Ankara, Turkey",Junior,"SQL;DataVisualization;Tableau","35000-50000",false,Technology
+J007,MLOps Engineer,TechCorp,"Istanbul, Turkey",Senior,"Python;CloudComputing;MachineLearning;Spark","140000-180000",false,Technology
+J008,Data Analytics Consultant,FinAI Solutions,"Izmir, Turkey",Mid,"DataAnalysis;SQL;DataVisualization;Communication","90000-120000",true,FinTech

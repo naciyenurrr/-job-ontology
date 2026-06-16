@@ -1,0 +1,9 @@
+candidate_id,name,email,years_experience,experience_level,skills,certifications,applied_job
+C001,Naciye Nur Akkus,naciye@example.com,1,Junior,"Python;DataAnalysis;DataVisualization;Tableau;SQL",TableauDesktopCert,J002
+C002,Berat Yilmaz,berat@example.com,3,Mid,"Python;MachineLearning;SQL;DataAnalysis",,J001
+C003,Zeynep Arslan,zeynep@example.com,7,Senior,"Python;MachineLearning;DeepLearning;SQL;CloudComputing","GoogleMLCert;AWSDACert",J003
+C004,Cem Kaya,cem@example.com,4,Mid,"Python;SQL;Spark;CloudComputing;DataAnalysis",AWSDACert,J004
+C005,Selin Demir,selin@example.com,6,Senior,"Python;NLP;DeepLearning;MachineLearning",,J005
+C006,Ali Yildiz,ali@example.com,2,Junior,"SQL;DataVisualization;Tableau",TableauDesktopCert,J002
+C007,Merve Sahin,merve@example.com,5,Mid,"Python;MachineLearning;SQL;CloudComputing",GoogleMLCert,J001
+C008,Emre Demir,emre@example.com,8,Senior,"Python;NLP;DeepLearning;MachineLearning;CloudComputing",,J005
